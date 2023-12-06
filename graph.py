@@ -87,19 +87,40 @@ class Graph:
             return True
         return False
 
-    #testing
-    def breadthFirstSearch(self, key, maxDepth):
-        if key not in self.__vertices:
+
+    def breadthFirstSearch(self, start, maxDepth):
+        if start not in self.getVerticesKeys():
             return False
         
-        visitedVertices = {}
-        distance = 0
         queue = LinkedQueue()
-        queue.enqueue(self.__vertices[key])
+        color, d, pi = {}, {}, {}
+        
+        for key in self.getVerticesKeys():
+            color[key] = "WHITE"
+            pi[key] = None
+        
+        color[start] = "BLACK"
+        d[start] = 0
+        pi[start] = 'start'
+        
+        currentDepth = 0
+        connections = {}
+        queue.enqueue(start)
+        while queue.length > 0:
+            s = queue.dequeue()
 
-        while queue.length > 0 and distance <= maxDepth:
-            currentVertex = queue.dequeue()
-            for adjVertex in currentVertex.getConnections():
-                queue.enqueue(self.__vertices[adjVertex])
-                print(adjVertex)
-            distance += 1
+            currentDepth = d[s]
+            if currentDepth > maxDepth:
+                return connections
+
+            connections[s] = []
+            connectedTo = self.getUserVertex(s).getConnectedTo()
+            for v in connectedTo:
+                connections[s].append(v)
+
+                if color.get(v) == "WHITE":
+                    color[v] = "BLACK"
+                    pi[v] = s
+                    d[v] = d[s] + 1
+                    queue.enqueue(v)
+        return connections

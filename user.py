@@ -12,7 +12,7 @@ class User:
 class Person(User):
     def __init__(self, username, name, age):
         super().__init__(username, name)
-        self.__infos = {
+        self.__info = {
             'username': [username, True], 
             'name': [name, True], 
             'age': [age, True],
@@ -21,38 +21,38 @@ class Person(User):
         self.connectionTypes = ['friends', 'relatives', 'acquaintances', 'client', 'following', 'followers']
         
     def __repr__(self):
-        return str(self.getPublicInfos())
+        return str(self.getInfo())
     
     def __str__(self):
-        return str(self.getPublicInfos())
+        return str(self.getInfo())
     
     def changeInfoVisibility(self, key):
-        if key not in self.__infos or key == 'username':
+        if key not in self.__info or key == 'username':
             return False
-        self.__infos[key][1] = not self.__infos[key][1]
+        self.__info[key][1] = not self.__info[key][1]
         return True
         
     def incrementFollower(self):
-        self.__infos['followersQty'][0] += 1
+        self.__info['followersQty'][0] += 1
 
-    def getInfos(self):
-        infos = {}
-        for key in self.__infos.keys():
-            infos[key] = self.__infos[key][0]
-        return infos
-
-    def getPublicInfos(self):
-        publicInfos = {}
-        for key in self.__infos.keys():
-            if self.__infos[key][1]:
-                publicInfos[key] = self.__infos[key][0]
-        return publicInfos
+    def getInfo(self):
+        publicinfo = {}
+        for key in self.__info.keys():
+            if self.__info[key][1]:
+                publicinfo[key] = self.__info[key][0]
+        return publicinfo
+    
+    def getAllInfo(self):
+        info = {}
+        for key in self.__info.keys():
+            info[key] = self.__info[key][0]
+        return info
 
 class Organization(User):
     def __init__(self, username, name):
         super().__init__(username, name)
         
-        self.__infos = {
+        self.__info = {
             'username': username, 
             'name': name,
             'clientsQty': 0,
@@ -60,19 +60,11 @@ class Organization(User):
         }
         self.connectionTypes = ['clients', 'client', 'following', 'followers']
 
-    def getInfos(self):
-        return self.__infos
-
-    def getPublicInfos(self):
-        return self.__infos
-    
-    def getInfo(self, key):
-        if key not in self.__infos:
-            return None
-        return self.__infos[key]
+    def getInfo(self):
+        return self.__info
 
     def incrementClient(self):
-        self.__infos['clientsQty'] += 1
+        self.__info['clientsQty'] += 1
     
     def incrementFollower(self):
-        self.__infos['FollowersQty'] += 1
+        self.__info['FollowersQty'] += 1

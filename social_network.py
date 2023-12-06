@@ -17,6 +17,12 @@ class SocialNetwork(Graph):
     def getUsersQty(self) -> int:
         return self.__personsQty + self.__organizationsQty
     
+    def userExists(self, username: str) -> bool:
+        return username in self.getVerticesKeys()
+    
+    def getAllUsernames(self) -> list:
+        return self.getVerticesKeys()
+    
     def getUsers(self) -> dict:
         userVertices = self.getVerticesValues() 
         users = []
@@ -25,17 +31,17 @@ class SocialNetwork(Graph):
             connections = {}
             for key in userConnectionTypes:
                 connections[key] = list(userVertex.getConnections()[key].keys())
-            users.append({'info': userVertex.getValue().getPublicInfos(), 'connections': connections})
+            users.append({'info': userVertex.getValue().getInfo(), 'connections': connections})
         return users
         
-    def getUser(self, username: str) -> Vertex:
+    def getUserVertex(self, username: str) -> Vertex:
         return self.getVertex(username)
     
     def getUserValues(self, username: str) -> User:
-        return self.getUser(username).getValue()
+        return self.getUserVertex(username).getValue()
 
     def getUserRelations(self, username: str) -> dict:
-        return self.getUser(username).getConnections()
+        return self.getUserVertex(username).getConnections()
 
     def addPerson(self, username: str, name: str, age: int) -> bool:
         newUser = Person(username, name, age)
@@ -77,3 +83,36 @@ class SocialNetwork(Graph):
             self.getUserValues(username2).incrementClient()
             return True
         return False
+    
+    def search(self, username: str, searchTerm: str) -> list:
+        if not self.userExists(username):
+            return False
+        
+        color = {}
+        queue = LinkedQueue()
+        
+        for user in self.getAllUsernames():
+            color[user] = "WHITE"
+        color[username] = "GRAY"
+        
+        foundUsers = []
+        queue.enqueue(username)
+        while queue.length > 0:
+            s = queue.dequeue()
+            connections = self.getUserVertex(s).getConnectedTo()
+            for v in connections:
+                if color.get(v) == "WHITE":
+                    userPublicInfo = list(self.getUserVertex(v).getValue().getInfo().values())
+                    color[v] = "GRAY"
+                    queue.enqueue(v)
+                    
+                    for info in userPublicInfo:
+                        if searchTerm.lower() in str(info).lower():
+                            foundUsers.append(v)
+                            break
+            color[s] = "BLACK"
+        
+        return foundUsers
+    
+    def getUserCenteredGraph(self, username: str, maxDepth: int) -> dict:
+        return self.breadthFirstSearch(username, maxDepth)
