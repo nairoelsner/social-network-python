@@ -5,6 +5,7 @@ class Vertex:
         self.__key = key
         self.__value = value
         self.__connections = {}
+        self.__connectedTo = set()
 
         for connType in connectionsTypes:
             self.addConnectionType(connType)
@@ -29,10 +30,14 @@ class Vertex:
     
     def addConnection(self, adjKey, connectionType, weight=0):
         self.__connections[connectionType][adjKey] = weight
+        self.__connectedTo.add(adjKey)
         return True
     
     def addConnectionType(self, connectionType):
         self.__connections[connectionType] = {}
+
+    def getConnectedTo(self):
+        return self.__connectedTo
 
 
 class Graph:
@@ -46,11 +51,14 @@ class Graph:
     def __iter__(self):
         return iter(self.__vertices.values())
 
+    def getVertices(self):
+        return self.__vertices
+
     def getVerticesKeys(self):
-        return self.__vertices.keys()
+        return list(self.__vertices.keys())
     
     def getVerticesValues(self):
-        return self.__vertices.values()
+        return list(self.__vertices.values())
 
     def addVertex(self, key, value, connectionsTypes):
         if key in self.__vertices:

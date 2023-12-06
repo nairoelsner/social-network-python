@@ -38,27 +38,28 @@ socialNetwork.addRelation('n_elsner', 'guanabara', 'client')
 socialNetwork.addRelation('clarossa', 'guanabara', 'client')
 
 users = socialNetwork.getUsers()
-print('All users:')
+#print('All users:')
 for user in users:
-    print(user, '\n')
+    #print(user, '\n')
+    pass
 
 #relations - OK!
 
 
-print('Users qty -->', socialNetwork.getUsersQty(), '\n')
+#print('Users qty -->', socialNetwork.getUsersQty(), '\n')
 
 
 nairo = socialNetwork.getUserValues('n_elsner')
-print('all info -->', nairo.getInfos(), '\n')
+#print('all info -->', nairo.getInfos(), '\n')
 
-print('public info -->', nairo.getPublicInfos())
+#print('public info -->', nairo.getPublicInfos())
 nairo.changeInfoVisibility('username')
 nairo.changeInfoVisibility('followersQty')
 nairo.changeInfoVisibility('age')
-print('public info -->', nairo.getPublicInfos())
+#print('public info -->', nairo.getPublicInfos())
 
 nairo.changeInfoVisibility('followersQty')
-print('public info -->', nairo.getPublicInfos())
+#print('public info -->', nairo.getPublicInfos())
 
 #visibility - OK!
 

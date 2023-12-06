@@ -6,7 +6,7 @@ class SocialNetwork(Graph):
         super().__init__()
         self.__personsQty = 0
         self.__organizationsQty = 0
-        self.enumTableFunctions = {
+        self.enumRelationFunctions = {
             'friendship': self.__addFriendship,
             'relative': self.__addRelative,
             'follow': self.__addFollow,
@@ -18,8 +18,16 @@ class SocialNetwork(Graph):
         return self.__personsQty + self.__organizationsQty
     
     def getUsers(self) -> dict:
-        return self.getVerticesValues()
-
+        userVertices = self.getVerticesValues() 
+        users = []
+        for userVertex in userVertices:
+            userConnectionTypes = list(userVertex.getConnections().keys())
+            connections = {}
+            for key in userConnectionTypes:
+                connections[key] = list(userVertex.getConnections()[key].keys())
+            users.append({'info': userVertex.getValue().getPublicInfos(), 'connections': connections})
+        return users
+        
     def getUser(self, username: str) -> Vertex:
         return self.getVertex(username)
     
@@ -47,7 +55,7 @@ class SocialNetwork(Graph):
         if username1 == username2:
             return False
         
-        return self.enumTableFunctions[relationType](username1, username2)
+        return self.enumRelationFunctions[relationType](username1, username2)
     
     def __addFriendship(self, username1: Person, username2: Person) -> bool:
         return self.addBidirectionalEdge(username1, username2, 'friends', 'friends')

@@ -62,6 +62,9 @@ class Organization(User):
 
     def getInfos(self):
         return self.__infos
+
+    def getPublicInfos(self):
+        return self.__infos
     
     def getInfo(self, key):
         if key not in self.__infos:
