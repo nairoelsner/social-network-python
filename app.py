@@ -1,9 +1,10 @@
 from flask import Flask, jsonify, request
-import json
+from flask_cors import CORS
 from social_network import *
 from test import *
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/users")
 def getUsers():
