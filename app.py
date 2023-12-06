@@ -1,13 +1,16 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-import json
 from social_network import *
 from test import *
 
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/users")
+@app.route('/')
+def health():
+    return jsonify({'status': 'Ok!'}), 200
+
+@app.route('/users')
 def getUsers():
     users = socialNetwork.getUsers()
     return jsonify({'users': users}), 200
@@ -92,7 +95,7 @@ def getGraph(username):
 def changeInfoVisibility():
     data = request.get_json()
     username = data['username']
-    field = data['field'].lower()
+    field = data['field']
 
     user = socialNetwork.getUserValues(username)
     response = user.changeInfoVisibility(field)
