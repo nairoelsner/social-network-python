@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+import json
 from social_network import *
 from test import *
 
@@ -73,10 +74,18 @@ def addRelation():
 
 @app.get('/user-centered-graph/<username>')
 def getGraph(username):
-    response = socialNetwork.getUserCenteredGraph(username)
-    if response:
-        return jsonify(response), 200
-    return jsonify({'success': response}), 400
+    graph = socialNetwork.getUserCenteredGraph(username)
+    if not graph:
+        return jsonify({'success': False}), 400
+
+    nodes = list(graph.keys())
+    edges = []
+    for node in nodes:
+        for edge in graph[node]:
+            edges.append({'from': node, 'to': edge})
+    
+    response = {'nodes': nodes, 'edges': edges}
+    return jsonify(response), 200
 
 
 @app.put('/user-info-visibility')
@@ -90,7 +99,6 @@ def changeInfoVisibility():
 
     if response:
         return jsonify({'success': response}), 200
-    return jsonify({'success': response}), 400
 
 
 
@@ -100,6 +108,6 @@ def getInfoVisibility(username):
     response = user.getInfoVisibility()
 
     if response:
-        return jsonify({'success': response}), 200
+        return jsonify({'infoVisibility': response}), 200
     return jsonify({'success': response}), 400
     
