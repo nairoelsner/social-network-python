@@ -1,11 +1,11 @@
 from linked_queue import *
+from user import Person, Organization
 
 class Vertex:
     def __init__(self, key, value, connectionsTypes):
         self.__key = key
         self.__value = value
         self.__connections = {}
-        self.__connectedTo = set()
 
         for connType in connectionsTypes:
             self.addConnectionType(connType)
@@ -30,14 +30,10 @@ class Vertex:
     
     def addConnection(self, adjKey, connectionType, weight=0):
         self.__connections[connectionType][adjKey] = weight
-        self.__connectedTo.add(adjKey)
         return True
     
     def addConnectionType(self, connectionType):
         self.__connections[connectionType] = {}
-
-    def getConnectedTo(self):
-        return self.__connectedTo
 
 
 class Graph:
@@ -51,14 +47,11 @@ class Graph:
     def __iter__(self):
         return iter(self.__vertices.values())
 
-    def getVertices(self):
-        return self.__vertices
-
     def getVerticesKeys(self):
-        return list(self.__vertices.keys())
+        return self.__vertices.keys()
     
     def getVerticesValues(self):
-        return list(self.__vertices.values())
+        return self.__vertices.values()
 
     def addVertex(self, key, value, connectionsTypes):
         if key in self.__vertices:
@@ -87,40 +80,61 @@ class Graph:
             return True
         return False
 
-
-    def breadthFirstSearch(self, start, maxDepth):
-        if start not in self.getVerticesKeys():
+    #testing
+    def breadthFirstSearch(self, key, value, maxDepth):
+        if key not in self.__vertices:
             return False
         
+        visitedVertices = {}
+        distance = 0
         queue = LinkedQueue()
-        color, d, pi = {}, {}, {}
-        
-        for key in self.getVerticesKeys():
-            color[key] = "WHITE"
-            pi[key] = None
-        
-        color[start] = "BLACK"
+        queue.enqueue(self.__vertices[key])
+
+        while queue.length > 0 and distance <= maxDepth:
+            currentVertex = queue.dequeue()
+            for adjVertex in currentVertex.getConnections():
+                queue.enqueue(self.__vertices[adjVertex])
+                print(adjVertex)
+            distance += 1
+
+    def bfs(self, start, value, maxDepth):
+        if value not in self.__vertices:
+            return False
+        color = {}  # Cores dos vértices
+        d = {}  # Distâncias dos vértices
+        pi = {}  # Vértices predecessores
+        distance = 0
+        queue = []  # Fila
+        find_user = False
+        for u in self.__vertices:
+            if u != start:
+                color[u] = "WHITE"
+                d[u] = float("inf")
+                pi[u] = None
+                print(u)
+        color[start] = 'GRAY'
         d[start] = 0
-        pi[start] = 'start'
-        
-        currentDepth = 0
-        connections = {}
-        queue.enqueue(start)
-        while queue.length > 0:
-            s = queue.dequeue()
-
-            currentDepth = d[s]
-            if currentDepth > maxDepth:
-                return connections
-
-            connections[s] = []
-            connectedTo = self.getUserVertex(s).getConnectedTo()
-            for v in connectedTo:
-                connections[s].append(v)
-
-                if color.get(v) == "WHITE":
-                    color[v] = "BLACK"
-                    pi[v] = s
-                    d[v] = d[s] + 1
-                    queue.enqueue(v)
-        return connections
+        pi[start] = None
+        queue.append(start)
+        while queue and distance <= maxDepth and not find_user:
+            s = queue.pop(0)
+            is_user = isinstance(self.getUser(s).getValue(), Person)
+            if (is_user):
+                connections = list(set(list(self.__vertices[s].getConnections()["friends"].keys()) + list(self.__vertices[s].getConnections()["following"].keys()) + list(self.__vertices[s].getConnections()["followers"].keys()) + list(self.__vertices[s].getConnections()["relatives"].keys()) + list(self.__vertices[s].getConnections()["acquaintances"].keys())))
+            else:
+                connections = list(set(list(self.__vertices[s].getConnections()["clients"].keys()) + list(self.__vertices[s].getConnections()["client"].keys()) + list(self.__vertices[s].getConnections()["following"].keys())))
+            for v in connections:
+                if (isinstance(self.getUser(v).getValue(), Person)):
+                    user = self.getUser(v).getValue().getPublicInfos().values()
+                else:
+                    user = self.getUser(v).getValue().getInfos().values()
+                if color.get(v) == "WHITE": 
+                    color[v] = "GRAY" 
+                    d[v] = d[s] + 1  
+                    pi[v] = s 
+                if value in user:
+                    find_user = True
+                    break
+            color[s] = "BLACK" # 
+            distance += 1
+        return d[value],pi[value]
