@@ -59,11 +59,11 @@ print('public info -->', nairo.getInfo())
 
 print('public info -->', nairo.getInfo())
 nairo.changeInfoVisibility('username')
-nairo.changeInfoVisibility('followersQty')
-nairo.changeInfoVisibility('age')
+#nairo.changeInfoVisibility('followersQty')
+#nairo.changeInfoVisibility('age')
 print('public info -->', nairo.getInfo())
 
-nairo.changeInfoVisibility('followersQty')
+#nairo.changeInfoVisibility('followersQty')
 print('public info -->', nairo.getInfo())
 
 #visibility - OK!

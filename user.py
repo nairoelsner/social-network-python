@@ -47,6 +47,12 @@ class Person(User):
                 publicinfo[key] = self.__info[key][0]
         return publicinfo
     
+    def getInfoVisibility(self):
+        infoVisibility = {}
+        for key in self.__info.keys():
+            infoVisibility[key] = self.__info[key][1]
+        return infoVisibility
+    
     def getAllInfo(self):
         info = {}
         for key in self.__info.keys():

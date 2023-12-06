@@ -77,3 +77,29 @@ def getGraph(username):
     if response:
         return jsonify(response), 200
     return jsonify({'success': response}), 400
+
+
+@app.put('/user-info-visibility')
+def changeInfoVisibility():
+    data = request.get_json()
+    username = data['username']
+    field = data['field'].lower()
+
+    user = socialNetwork.getUserValues(username)
+    response = user.changeInfoVisibility(field)
+
+    if response:
+        return jsonify({'success': response}), 200
+    return jsonify({'success': response}), 400
+
+
+
+@app.get('/user-info-visibility/<username>')
+def getInfoVisibility(username):
+    user = socialNetwork.getUserValues(username)
+    response = user.getInfoVisibility()
+
+    if response:
+        return jsonify({'success': response}), 200
+    return jsonify({'success': response}), 400
+    
