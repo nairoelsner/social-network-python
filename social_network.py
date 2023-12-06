@@ -33,6 +33,18 @@ class SocialNetwork(Graph):
                 connections[key] = list(userVertex.getConnections()[key].keys())
             users.append({'info': userVertex.getValue().getInfo(), 'connections': connections})
         return users
+    
+    def getUser(self, username: str) -> dict:
+        if not self.userExists(username):
+            return False
+        
+        userVertex = self.getUserVertex(username)
+        userConnectionTypes = list(userVertex.getConnections().keys())
+        connections = {}
+        for key in userConnectionTypes:
+            connections[key] = list(userVertex.getConnections()[key].keys())
+        user = {'info': userVertex.getValue().getInfo(), 'connections': connections}
+        return user
         
     def getUserVertex(self, username: str) -> Vertex:
         return self.getVertex(username)
@@ -44,14 +56,14 @@ class SocialNetwork(Graph):
         return self.getUserVertex(username).getConnections()
 
     def addPerson(self, username: str, name: str, age: int) -> bool:
-        newUser = Person(username, name, age)
+        newUser = Person(username, name, age, 'person')
         if self.addVertex(username, newUser, newUser.connectionTypes):
             self.__personsQty += 1
             return True
         return False
     
     def addOrganization(self, username: str, name: str) -> bool:
-        newUser = Organization(username, name)
+        newUser = Organization(username, name, 'organization')
         if self.addVertex(username, newUser, newUser.connectionTypes):
             self.__organizationsQty += 1
             return True
@@ -114,5 +126,7 @@ class SocialNetwork(Graph):
         
         return foundUsers
     
-    def getUserCenteredGraph(self, username: str, maxDepth: int) -> dict:
-        return self.breadthFirstSearch(username, maxDepth)
+    def getUserCenteredGraph(self, username: str) -> dict:
+        if not self.userExists(username):
+            return False
+        return self.breadthFirstSearch(username, 2)

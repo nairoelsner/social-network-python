@@ -34,7 +34,7 @@ socialNetwork.addRelation('n_elsner', 'seven.renato', 'follow')
 socialNetwork.addRelation('seven.renato', 'n_elsner', 'follow')
 socialNetwork.addRelation('clarossa', 'n_elsner', 'follow')
 socialNetwork.addRelation('seven.renato', 'coca-cola', 'follow')
-#socialNetwork.addRelation('coca-cola', 'n_elsner', 'follow')
+socialNetwork.addRelation('coca-cola', 'n_elsner', 'follow')
 
 #add clients
 socialNetwork.addRelation('guanabara', 'coca-cola', 'client')
@@ -73,4 +73,4 @@ print('public info -->', nairo.getInfo())
 print(socialNetwork.search('n_elsner', 'paul'))
 
 #graph centered in user
-print(socialNetwork.getUserCenteredGraph('n_elsner', 3))
+print(socialNetwork.getUserCenteredGraph('n_elsner'))
