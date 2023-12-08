@@ -84,9 +84,9 @@ def getUserCenteredGraph(username):
     if not graph:
         return jsonify({'success': False}), 400
 
-    nodes = list(graph['connections'].keys())
+    nodes = list(graph['distance'].keys())
     edges = []
-    for node in nodes:
+    for node in list(graph['connections'].keys()):
         for edge in graph['connections'][node]:
             edges.append({'source': node, 'target': edge})
     
