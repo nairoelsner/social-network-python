@@ -19,7 +19,7 @@ def createUsers(socialNetwork):
 
     
     for user in users:
-        for i in range(randint(1, 5)):
+        for i in range(randint(0, 2)):
             randomUser = users[randint(0, len(users) -1)]
             while randomUser == user:
                 randomUser = users[randint(0, len(users) -1)]

@@ -110,7 +110,8 @@ class Graph:
             s = queue.dequeue()
 
             currentDepth = d[s]
-            if currentDepth > maxDepth:
+            if currentDepth >= maxDepth:
+                
                 return {'connections': connections, 'distance': d}
 
             connections[s] = []
