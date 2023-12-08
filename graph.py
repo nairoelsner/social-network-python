@@ -111,7 +111,7 @@ class Graph:
 
             currentDepth = d[s]
             if currentDepth > maxDepth:
-                return connections
+                return {'connections': connections, 'distance': d}
 
             connections[s] = []
             connectedTo = self.getUserVertex(s).getConnectedTo()
@@ -123,4 +123,5 @@ class Graph:
                     pi[v] = s
                     d[v] = d[s] + 1
                     queue.enqueue(v)
-        return connections
+        
+        return {'connections': connections, 'distance': d}

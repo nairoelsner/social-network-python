@@ -54,6 +54,9 @@ class SocialNetwork(Graph):
 
     def getUserRelations(self, username: str) -> dict:
         return self.getUserVertex(username).getConnections()
+    
+    def getUserConnectedTo(self, username: str) -> list:
+        return list(self.getUserVertex(username).getConnectedTo())
 
     def addPerson(self, username: str, name: str, age: int) -> bool:
         newUser = Person(username, name, age, 'person')
@@ -129,4 +132,15 @@ class SocialNetwork(Graph):
     def getUserCenteredGraph(self, username: str) -> dict:
         if not self.userExists(username):
             return False
-        return self.breadthFirstSearch(username, 2)
+        return self.breadthFirstSearch(username, 3)
+
+    def getSocialNetworkGraph(self) -> dict:
+        usernames = self.getAllUsernames()
+
+        graph = {'nodes': usernames, 'connections': []}
+        for username in usernames:
+            for connectedUser in self.getUserConnectedTo(username):
+                graph['connections'].append({'source': username, 'target': connectedUser})
+                
+        
+        return graph

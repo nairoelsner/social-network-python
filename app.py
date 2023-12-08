@@ -1,7 +1,10 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from social_network import *
-from test import *
+from default_accounts import *
+
+socialNetwork = SocialNetwork()
+createUsers(socialNetwork)
 
 app = Flask(__name__)
 CORS(app)
@@ -76,19 +79,24 @@ def addRelation():
 
 
 @app.get('/user-centered-graph/<username>')
-def getGraph(username):
+def getUserCenteredGraph(username):
     graph = socialNetwork.getUserCenteredGraph(username)
     if not graph:
         return jsonify({'success': False}), 400
 
-    nodes = list(graph.keys())
+    nodes = list(graph['connections'].keys())
     edges = []
     for node in nodes:
-        for edge in graph[node]:
-            edges.append({'from': node, 'to': edge})
+        for edge in graph['connections'][node]:
+            edges.append({'source': node, 'target': edge})
     
-    response = {'nodes': nodes, 'edges': edges}
+    response = {'nodes': nodes, 'edges': edges, 'distances': graph['distance']}
     return jsonify(response), 200
+
+
+@app.get('/social-network-graph')
+def getSocialNetworkGraph():
+    return socialNetwork.getSocialNetworkGraph()
 
 
 @app.put('/user-info-visibility')

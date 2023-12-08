@@ -70,7 +70,8 @@ print('public info -->', nairo.getInfo())
 
 
 #search user
-print(socialNetwork.search('n_elsner', 'paul'))
+#print(socialNetwork.search('n_elsner', 'paul'))
 
 #graph centered in user
-print(socialNetwork.getUserCenteredGraph('n_elsner'))
+#print(socialNetwork.getUserCenteredGraph('n_elsner'))
+print(socialNetwork.getSocialNetworkGraph())
