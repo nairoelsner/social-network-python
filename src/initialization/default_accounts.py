@@ -2,7 +2,7 @@ from ..social_network.social_network import *
 from random import randint
 
 def createUsers(socialNetwork):
-    sheet = open('./api/src/initialization/users.csv', 'r')
+    sheet = open('./src/initialization/users.csv', 'r')
     users = [x[:-1].split(';') for x in sheet.readlines()]
     sheet.close()
 
