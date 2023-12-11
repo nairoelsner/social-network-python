@@ -1,1 +1,1 @@
-flask --app app run --debug
+flask --app ./api/app run --debug
