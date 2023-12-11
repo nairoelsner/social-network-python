@@ -39,7 +39,7 @@ This directory contains the source code for the frontend of the application deve
 - `src/social_network`: Contains all the implementation files for the social network itself, as well as the users' implementation.
 - `src/initialization`: Contains the code responsible for populating the social network with users and random relationships.
 
-### Technologies Used
+### Technologies
 
 - Python
 - Flask for API
