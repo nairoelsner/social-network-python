@@ -1,4 +1,4 @@
-from src.data_structures.linked_queue import *
+from .linked_queue import *
 
 class Vertex:
     def __init__(self, key, value, connectionsTypes):

@@ -1,5 +1,5 @@
-from src.data_structures.graph import *
-from src.social_network.user import *
+from ..data_structures.graph import *
+from ..social_network.user import *
 
 class SocialNetwork(Graph):
     def __init__(self):

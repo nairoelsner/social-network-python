@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from src.social_network.social_network import *
-from src.initialization.default_accounts import *
+from .src.social_network.social_network import *
+from .src.initialization.default_accounts import *
 
 socialNetwork = SocialNetwork()
 createUsers(socialNetwork)

@@ -1,4 +1,4 @@
-from src.social_network.social_network import *
+from ..social_network.social_network import *
 from random import randint
 
 def createUsers(socialNetwork):
